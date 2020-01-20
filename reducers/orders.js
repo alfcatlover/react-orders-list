@@ -4,6 +4,7 @@ import {ActionTypes} from '../constants/index';
 
 export const ordersState = {
   payload: [],
+  positions: [],
   loading: true,
 };
 
@@ -29,7 +30,7 @@ export default {
           ...state,
           loading: false,
           tesT: payload,
-          payload: state.payload.map((order)=>{
+          payload: state.payload.map((order) => {
             return {
               ...order,
               isOpen: order.id == payload

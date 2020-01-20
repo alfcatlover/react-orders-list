@@ -1,19 +1,16 @@
 import React, {useEffect, useCallback} from 'react';
-
 import {useDispatch, useSelector} from 'react-redux';
+
+import {makeStyles} from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
 
 import {ordersGet, ordersPositionsGet} from '../actions/orders';
 import Order from '../components/Order';
 import Page from '../components/Page';
 
-import {makeStyles} from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    maxWidth: 560,
     backgroundColor: theme.palette.background.paper,
   }
 }));
@@ -38,10 +35,6 @@ function OrdersRoute() {
 
   return (
     <Page title="Orders Page">
-
-      <h2>
-        Orders List
-      </h2>
 
       {loading && <div>Loading...</div>}
       {!loading && !orders.length && <div>No data</div>}

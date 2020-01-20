@@ -1,17 +1,17 @@
-import {all, put, takeEvery, takeLatest} from 'redux-saga/effects';
+import {all, put, takeEvery} from 'redux-saga/effects';
 
 import {ActionTypes} from '../constants/index';
 import {
   ordersGetSuccess,
   ordersPositionsGetSuccess,
-} from "../actions/orders";
+} from '../actions/orders';
 import api from '../helpers/api';
 
 export function* getOrdersSaga() {
   try {
-    const res = yield  api.get(`order`);
-    const data = yield res.json();
-    yield put(ordersGetSuccess(data))
+    const orders = yield  api.get(`order`)
+      .then((response) => response.json());
+    yield put(ordersGetSuccess(orders))
   } catch (err) {
     console.error('saga error', err);
   }
@@ -19,12 +19,9 @@ export function* getOrdersSaga() {
 
 export function* getOrdersPositionsSaga(params) {
   try {
-
     const route = `order/${params.payload}`;
-
-    debugger;
-    const positions = yield api.get(route).then((response) => response.json());
-    //const position = yield response.json();
+    const positions = yield api.get(route)
+      .then((response) => response.json());
     yield put(ordersPositionsGetSuccess({
       positions,
       orderId: params.payload
