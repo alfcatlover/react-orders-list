@@ -25,24 +25,20 @@ export default {
         }
       },
       [ActionTypes.ORDERS_POSITIONS_GET]: (state, {payload}) => {
-        console.log('payload', payload);
         return {
           ...state,
-          loading: false,
-          tesT: payload,
-          payload: state.payload.map((order) => {
-            return {
-              ...order,
-              isOpen: order.id == payload
-            }
-          })
+          loadingPositions: true,
+          positions: [],
+          payload: state.payload.map((order) => ({
+            ...order,
+            isOpen: order.id === payload
+          }))
         }
       },
       [ActionTypes.ORDERS_POSITIONS_GET_SUCCESS]: (state, {payload}) => {
-        console.log('payload', payload);
         return {
           ...state,
-          loading: false,
+          loadingPositions: false,
           positions: payload.positions
         }
       }

@@ -1,54 +1,67 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-
 import {makeStyles} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {ordersGet, ordersPositionsGet} from '../actions/orders';
+import Header from '../components/Header';
 import Order from '../components/Order';
-import Page from '../components/Page';
+import NullState from '../components/NullState';
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  wrap: {
     width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
     backgroundColor: theme.palette.background.paper,
+  },
+  spinner: {
+    padding: '30px',
+  },
+  list: {
+    width: '100%',
   }
 }));
 
 function OrdersRoute() {
-  useEffect(() => {
-    dispatch(ordersGet());
-  }, []);
+  const [filter, setFilter] = useState('');
 
   const orders = useSelector(state => state.orders.payload);
   const positions = useSelector(state => state.orders.positions);
   const loading = useSelector(state => state.orders.loading);
   const dispatch = useDispatch();
 
+  const fetchOrders = useCallback((filterStr) => dispatch(ordersGet(filterStr)), []);
   const fetchOrderPositions = useCallback((orderId) => dispatch(ordersPositionsGet(orderId)), []);
 
   const classes = useStyles();
 
-  const showPositions = (orderId) => {
-    fetchOrderPositions(orderId);
-  };
+  useEffect(fetchOrders, []);
 
   return (
-    <Page title="Orders Page">
+    <>
+      <Header title={'Order List'}
+              filter={filter}
+              onSearch={(event) => {
+                setFilter(event.target.value);
+                fetchOrders(event.target.value);
+              }}/>
+      <div className={classes.wrap}>
+        {loading && <div className={classes.spinner}><CircularProgress color="secondary"/></div>}
+        {!loading && !orders.length && <NullState/>}
 
-      {loading && <div>Loading...</div>}
-      {!loading && !orders.length && <div>No data</div>}
-
-      {!loading && orders.length > 0 && <List
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        className={classes.root}>
-        {orders.map((order) => <Order order={order}
-                                      key={order.id}
-                                      positions={positions}
-                                      onClick={showPositions}/>)}
-      </List>}
-    </Page>
+        {!loading && orders.length > 0 && <List
+          component="div"
+          className={classes.list}>
+          {orders.map((order) => <Order order={order}
+                                        key={order.id}
+                                        positions={positions}
+                                        onClick={fetchOrderPositions}/>)}
+        </List>}
+      </div>
+    </>
   )
 }
 

@@ -7,9 +7,12 @@ import {
 } from '../actions/orders';
 import api from '../helpers/api';
 
-export function* getOrdersSaga() {
+export function* getOrdersSaga(params) {
+  console.log('a,b', params)
   try {
-    const orders = yield  api.get(`order`)
+    const orders = yield  api.get(`order`, params.payload && {
+      filter: params.payload
+    })
       .then((response) => response.json());
     yield put(ordersGetSuccess(orders))
   } catch (err) {

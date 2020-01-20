@@ -1,6 +1,11 @@
 export default {
   get(route, query) {
-    return fetch(`${process.env.API_ROOT}/${route}`, query);
+    console.log('query', query);
+    let url = `${process.env.API_ROOT}/${route}`;
+    if (query) {
+      url += Object.keys(query).reduce((acc, key) => `${acc}${key}=${query[key]}&`, '?')
+    }
+    return fetch(url);
   },
   post(route, payload) {
     return fetch(`${process.env.API_ROOT}/${route}`, {

@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Header({title}) {
+function Header({title, onSearch, filter}) {
   const classes = useStyles();
 
   return [
@@ -77,7 +77,9 @@ function Header({title}) {
               <SearchIcon />
             </div>
             <InputBase
+              onChange={onSearch}
               placeholder="Search…"
+              value={filter}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
