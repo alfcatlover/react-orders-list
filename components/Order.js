@@ -8,43 +8,32 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
-import StarBorder from '@material-ui/icons/StarBorder';
 import Collapse from '@material-ui/core/Collapse';
-import {makeStyles} from '@material-ui/core/styles';
 
+import Position from '../components/Position';
 import {TOrder} from '../helpers/types';
 
-const useStyles = makeStyles(theme => ({
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-}));
+function Order({order, positions, onClick}) {
 
-function Order({order, positions, ...restProps}) {
-  const classes = useStyles();
+  const text = (
+    <span><strong>Заказ: {order.docNum}</strong> | {order.docDate} | {order.description}</span>
+  );
 
   return (
-    <>
-      <ListItem button onClick={() => restProps.onClick(order.id)}>
+    <div key={order.id}>
+      <ListItem button onClick={() => onClick(order.id)}>
         <ListItemIcon>
           <InboxIcon/>
         </ListItemIcon>
-        <ListItemText primary={`${order.docNum}, ${order.docDate}, ${order.description}`}/>
+        <ListItemText primary={text}/>
         {order.isOpen ? <ExpandLess/> : <ExpandMore/>}
       </ListItem>
       <Collapse in={order.isOpen} timeout='auto' unmountOnExit>
         <List component="div" disablePadding>
-          {positions.map((position) =>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <StarBorder/>
-              </ListItemIcon>
-              <ListItemText primary={`${position.id}, ${position.name}, ${position.qty}`}/>
-            </ListItem>
-          )}
+          {positions.map((position) => <Position position={position}/>)}
         </List>
       </Collapse>
-    </>
+    </div>
   )
 }
 

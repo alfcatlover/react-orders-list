@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "es6-promise": "4.1.1",
+    "eslint-plugin-react": "^7.18.0",
     "express": "~4.13.4",
     "fbjs": "^1.0.0",
     "final-form": "^4.16.2",
@@ -28,16 +29,13 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-final-form": "^6.3.0",
-    "react-final-form-hooks": "^2.0.1",
-    "react-loader-spinner": "^2.3.0",
     "react-redux": "^7.1.0",
     "react-select": "^2.3.0",
     "redux": "^4.0.4",
     "redux-actions": "^2.6.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-persist": "^5.10.0",
-    "redux-saga": "^1.0.5"
+    "redux-saga": "^1.0.5",
+    "throttle-debounce": "^2.1.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.19",
@@ -48,8 +46,10 @@
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^4.0.0-beta.2",
     "mini-css-extract-plugin": "^0.4.4",
-    "node-sass": "^4.9.4",
-    "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1"
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:alfcatlover/react-orders-list.git",
+  "author": "alfcatlover <alf.cat.loverr@gmail.com>",
+  "license": "MIT"
 }

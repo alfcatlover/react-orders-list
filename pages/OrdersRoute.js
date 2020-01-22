@@ -1,5 +1,7 @@
-import React, {useEffect, useCallback, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {debounce} from 'throttle-debounce';
+
 import {makeStyles} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -33,8 +35,17 @@ function OrdersRoute() {
   const loading = useSelector(state => state.orders.loading);
   const dispatch = useDispatch();
 
-  const fetchOrders = useCallback((filterStr) => dispatch(ordersGet(filterStr)), []);
-  const fetchOrderPositions = useCallback((orderId) => dispatch(ordersPositionsGet(orderId)), []);
+  const fetchOrders = (filterStr) => {
+    dispatch(ordersGet(filterStr));
+  };
+  const fetchOrderPositions = (orderId) => dispatch(ordersPositionsGet(orderId));
+
+  const fetchOrdersThrottled = useRef(debounce(500, fetchOrders)).current;
+
+  const onSearch = (event)=>{
+    setFilter(event.target.value);
+    fetchOrdersThrottled(event.target.value);
+  };
 
   const classes = useStyles();
 
@@ -44,10 +55,7 @@ function OrdersRoute() {
     <>
       <Header title={'Order List'}
               filter={filter}
-              onSearch={(event) => {
-                setFilter(event.target.value);
-                fetchOrders(event.target.value);
-              }}/>
+              onSearch={onSearch}/>
       <div className={classes.wrap}>
         {loading && <div className={classes.spinner}><CircularProgress color="secondary"/></div>}
         {!loading && !orders.length && <NullState/>}

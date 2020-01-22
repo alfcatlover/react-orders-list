@@ -6,7 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import {fade, makeStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles(theme => ({
@@ -51,9 +51,9 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: 120,
+      width: 220,
       '&:focus': {
-        width: 200,
+        width: 300,
       },
     },
   },
@@ -62,35 +62,37 @@ const useStyles = makeStyles(theme => ({
 function Header({title, onSearch, filter}) {
   const classes = useStyles();
 
-  return [
-    <Head key="head">
-      <title>{title}</title>
-    </Head>,
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            {title}
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+  return (
+    <>
+      <Head key="head">
+        <title>{title}</title>
+      </Head>
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography className={classes.title} variant="h6" noWrap>
+              {title}
+            </Typography>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon/>
+              </div>
+              <InputBase
+                onChange={onSearch}
+                placeholder="Search…"
+                value={filter}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{'aria-label': 'search'}}
+              />
             </div>
-            <InputBase
-              onChange={onSearch}
-              placeholder="Search…"
-              value={filter}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-        </Toolbar>
-      </AppBar>
-    </div>
-  ]
+          </Toolbar>
+        </AppBar>
+      </div>
+    </>
+  )
 }
 
 Header.propTypes = {

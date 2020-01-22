@@ -1,6 +1,5 @@
 export default {
   get(route, query) {
-    console.log('query', query);
     let url = `${process.env.API_ROOT}/${route}`;
     if (query) {
       url += Object.keys(query).reduce((acc, key) => `${acc}${key}=${query[key]}&`, '?')
